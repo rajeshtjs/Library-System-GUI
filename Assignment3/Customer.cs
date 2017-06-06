@@ -27,7 +27,7 @@ namespace Assignment3
             this.id = id; this.name = name;
         }
 
-        public string ToString()
+        public override string ToString()  
         {
             return String.Format("{0,-5} {1,-10}", id, name);
         }

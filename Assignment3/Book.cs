@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace Assignment3
 {
-    class Book
+    abstract class Book
     {
         private int catalogNumber;
         private string title;
         private string authors;
-        Customer c;
-        bool available;
+        protected Customer c;
+        protected DateTime dueDate;
+        bool available = false;
 
         public int CatalogNumber
         {
@@ -26,36 +27,34 @@ namespace Assignment3
             this.catalogNumber = catalogNo;
         }
 
-        public string ToString() 
+        public override  string ToString() 
         {
-            string s =String.Format( "{0,-5}{1,-20}{2,-10}",catalogNumber,title ,authors);
-            if(this.c == null)
+            string s;
+            if (this.c == null)
             {
-                s = s + "\tAvailable";
+                s = "\tAvailable";
             }
-            else if (available == true)
+            else
             {
-                s = s + "\tAvailable";
+                s = "\tChecked out to Customer" + " " + c.Id + " " + "Due on" + " " + dueDate;
             }
-            else if (available == false)
-            {
-                s = s + "\tChecked out to Customer" +" "+ c.Id;
-            }
-            return s;
+            return String.Format("{0,-6}{1,-22}{2,-15}{3,-60}", catalogNumber, title, authors, s);
         }
 
+        public abstract DateTime findDueDate();
+       
         public bool CheckOut(Customer c)
         {            
             if (this.c == null)
             {
                 this.c = c;
-                available = true;
+                this.dueDate = findDueDate();
+                return true;
             }
             else
             {
-                available = false;
+                return false;
             }
-            return available;
         }
 
         public bool CheckIn()
